@@ -1,5 +1,6 @@
 ﻿using ExampleAPI.Interfaces;
 using ExampleAPI.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleAPI.Controllers
@@ -10,21 +11,25 @@ namespace ExampleAPI.Controllers
     {
         private readonly IMovieService _movieService;
         private readonly ILogger<MovieController> _logger;
+        private readonly IValidator<Movie> _validator;
 
-        public MovieController(IMovieService movieService, ILogger<MovieController> logger)
+        public MovieController(IMovieService movieService, ILogger<MovieController> logger, IValidator<Movie> validator)
         {
             _movieService = movieService;
             _logger = logger;
+            _validator = validator;
         }
 
         [HttpPost(Name = "CreateMovie")]
         public ActionResult<Movie> CreateMovie([FromBody] Movie movie)
         {
-            if (movie == null)
-            {
-                _logger.LogWarning("Attempted to create a movie with null data");
+            var result = _validator.Validate(movie);
 
-                return BadRequest(new { message = "Movie cannot be null" });
+            if (!result.IsValid)
+            {
+                _logger.LogWarning("Invalid movie details provided. Errors: {ValidationErrors}", result.Errors);
+
+                return BadRequest(result.Errors);
             }
 
             var isAddedSuccessfully = _movieService.Create(movie);

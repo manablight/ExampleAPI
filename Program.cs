@@ -1,6 +1,8 @@
 using ExampleAPI.Interfaces;
 using ExampleAPI.Repositories;
 using ExampleAPI.Services;
+using ExampleAPI.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IMovieRepository, MovieRepository>();
 builder.Services.AddTransient<IMovieService, MovieService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<MovieValidator>();
 
 var app = builder.Build();
 
