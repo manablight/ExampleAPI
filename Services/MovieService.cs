@@ -1,6 +1,5 @@
 ﻿using ExampleAPI.Interfaces;
 using ExampleAPI.Models;
-using ExampleAPI.Repositories;
 
 namespace ExampleAPI.Services;
 

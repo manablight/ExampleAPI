@@ -6,6 +6,12 @@ namespace ExampleAPI.Repositories
     public class MovieRepository : IMovieRepository
     {
         private readonly List<Movie> _movies = new();
+        private readonly ILogger<MovieRepository> _logger;
+
+        public MovieRepository(ILogger<MovieRepository> logger)
+        {
+            _logger = logger;
+        }
 
         public bool CreateMovie(Movie movie)
         {
@@ -17,9 +23,11 @@ namespace ExampleAPI.Repositories
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                throw new Exception("Error occurred while creating movie");
+                _logger.LogError(exception, "Error occurred while creating a movie: {@Movie}", movie);
+
+                throw new Exception("Error occurred while creating movie", exception);
             }
         }
 
@@ -29,9 +37,11 @@ namespace ExampleAPI.Repositories
             {
                 return _movies.First(movie => movie.Id == id);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException exception)
             {
-                throw new Exception("Movie with given id not found");
+                _logger.LogError(exception, "Movie with given id not found: {Id}", id);
+
+                throw new Exception("Movie with given id not found", exception);
             }
         }
 
@@ -41,12 +51,13 @@ namespace ExampleAPI.Repositories
             {
                 return _movies.ToList();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                throw new Exception("Error occurred while retrieving all movies");
+                _logger.LogError(exception, "Error occurred while retrieving all movies");
+
+                throw new Exception("Error occurred while retrieving all movies", exception);
             }
         }
-
 
         public bool DeleteMovie(Guid id)
         {
@@ -60,9 +71,11 @@ namespace ExampleAPI.Repositories
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                throw new Exception("Error occurred while deleting movie");
+                _logger.LogError(exception, "Error occurred while deleting a movie with id: {Id}", id);
+
+                throw new Exception("Error occurred while deleting movie", exception);
             }
         }
     }
