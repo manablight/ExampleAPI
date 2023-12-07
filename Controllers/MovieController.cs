@@ -1,5 +1,5 @@
-﻿using ExampleAPI.Models;
-using ExampleAPI.Services;
+﻿using ExampleAPI.Interfaces;
+using ExampleAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleAPI.Controllers;
@@ -8,9 +8,9 @@ namespace ExampleAPI.Controllers;
 [Route("[controller]")]
 public class MovieController : ControllerBase
 {
-    private readonly MovieService _movieService;
+    private readonly IMovieService _movieService;
 
-    public MovieController(MovieService movieService) => _movieService = movieService;
+    public MovieController(IMovieService movieService) => _movieService = movieService;
 
 
     //These endpoints take the happy path.

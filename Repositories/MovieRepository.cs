@@ -1,8 +1,9 @@
-﻿using ExampleAPI.Models;
+﻿using ExampleAPI.Interfaces;
+using ExampleAPI.Models;
 
 namespace ExampleAPI.Repositories
 {
-    public class MovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly List<Movie> _movies = new();
 

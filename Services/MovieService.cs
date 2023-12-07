@@ -1,13 +1,14 @@
-﻿using ExampleAPI.Models;
+﻿using ExampleAPI.Interfaces;
+using ExampleAPI.Models;
 using ExampleAPI.Repositories;
 
 namespace ExampleAPI.Services;
 
-public class MovieService
+public class MovieService : IMovieService
 {
-    private readonly MovieRepository _movieRepository;
+    private readonly IMovieRepository _movieRepository;
 
-    public MovieService(MovieRepository movieRepository) => _movieRepository = movieRepository;
+    public MovieService(IMovieRepository movieRepository) => _movieRepository = movieRepository;
 
     public bool Create(Movie movie) => _movieRepository.CreateMovie(movie);
     public Movie GetMovie(Guid id) => _movieRepository.GetMovie(id);

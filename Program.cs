@@ -1,3 +1,4 @@
+using ExampleAPI.Interfaces;
 using ExampleAPI.Repositories;
 using ExampleAPI.Services;
 
@@ -7,8 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<MovieRepository>();
-builder.Services.AddTransient<MovieService>();
+builder.Services.AddSingleton<IMovieRepository, MovieRepository>();
+builder.Services.AddTransient<IMovieService, MovieService>();
 
 var app = builder.Build();
 
